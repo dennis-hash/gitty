@@ -84,6 +84,8 @@ public class Main {
                 branch.switchBranch(branchName);
             }
 
+            //new line
+
             case "diffs" -> {
                 if (args.length < 2) {
                     System.out.println("Error: Missing branch name for 'diffs' command.");
