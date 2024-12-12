@@ -13,15 +13,15 @@ public class BranchMerger {
 
     public void mergeBranch(String branchName) throws IOException, NoSuchAlgorithmException {
         // Step 1: Ensure the branch exists
-        File branchFile = new File(".git/refs/heads/" + branchName);
+        File branchFile = new File(".gitty/refs/heads/" + branchName);
         if (!branchFile.exists()) {
             throw new IOException("Branch " + branchName + " does not exist.");
         }
 
         // Step 2: Get the current branch's HEAD SHA
-        File headFile = new File(".git/HEAD");
+        File headFile = new File(".gitty/HEAD");
         if (!headFile.exists()) {
-            throw new IOException("No .git directory found. Are you inside a repository?");
+            throw new IOException("No .gitty directory found. Are you inside a repository?");
         }
 
         String currentBranchRef = Files.readString(headFile.toPath()).trim();
@@ -30,7 +30,7 @@ public class BranchMerger {
         }
 
         String currentBranch = currentBranchRef.substring(5); // Remove "ref: "
-        File currentBranchFile = new File(".git/" + currentBranch);
+        File currentBranchFile = new File(".gitty/" + currentBranch);
         if (!currentBranchFile.exists()) {
             throw new IOException("Current branch reference does not exist.");
         }

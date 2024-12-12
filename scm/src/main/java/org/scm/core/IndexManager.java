@@ -53,7 +53,7 @@ public class IndexManager {
 
 
     public List<IndexEntry> readIndex() throws IOException {
-        File indexFile = new File(".git/index");
+        File indexFile = new File(".gitty/index");
         if (!indexFile.exists()) {
             return new ArrayList<>(); // Return an empty list if the index file doesn't exist
         }
@@ -126,7 +126,7 @@ public class IndexManager {
 
 
     private void writeIndex(List<IndexEntry> entries) throws IOException {
-        File indexFile = new File(".git/index");
+        File indexFile = new File(".gitty/index");
 
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
              FileOutputStream fos = new FileOutputStream(indexFile)) {

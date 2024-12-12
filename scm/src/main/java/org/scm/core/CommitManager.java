@@ -39,9 +39,9 @@ public class CommitManager {
         String commitSha = GitObject.createObject(commitData, "commit", true); // Save commit to .git/objects
 
         // Step 5: Determine the current branch
-        File headFile = new File(".git/HEAD");
+        File headFile = new File(".gitty/HEAD");
         if (!headFile.exists()) {
-            throw new IOException("No .git repository found. Are you inside a repository?");
+            throw new IOException("No .gitty repository found. Are you inside a repository?");
         }
 
         String headContent = Files.readString(headFile.toPath()).trim();
@@ -50,7 +50,7 @@ public class CommitManager {
         }
 
         String branchPath = headContent.substring(5); // Remove "ref: " prefix
-        File branchFile = new File(".git/" + branchPath);
+        File branchFile = new File(".gitty/" + branchPath);
 
         // Step 6: Ensure the branch file exists (handle first commit)
         if (!branchFile.exists()) {
@@ -70,7 +70,7 @@ public class CommitManager {
 
     public Commit readCommit(String commitSha) throws IOException {
         // Step 1: Locate the commit object
-        String objectPath = ".git/objects/" + commitSha.substring(0, 2) + "/" + commitSha.substring(2);
+        String objectPath = ".gitty/objects/" + commitSha.substring(0, 2) + "/" + commitSha.substring(2);
         File commitFile = new File(objectPath);
 
         if (!commitFile.exists()) {
@@ -132,16 +132,41 @@ public class CommitManager {
         return new Commit(treeSha, parentShas, author, committer, message);
     }
 
+    public String getLatestCommitSha() throws IOException {
+        // Step 1: Read the HEAD file
+        File headFile = new File(".gitty/HEAD");
+        if (!headFile.exists()) {
+            throw new IOException("No .gitty repository found. Are you inside a repository?");
+        }
+
+        String headContent = Files.readString(headFile.toPath()).trim();
+        if (!headContent.startsWith("ref: ")) {
+            throw new IOException("HEAD does not point to a valid branch reference.");
+        }
+
+        // Step 2: Determine the branch reference
+        String branchPath = headContent.substring(5);
+        File branchFile = new File(".gitty/" + branchPath);
+
+        if (!branchFile.exists()) {
+            return null;
+        }
+
+        String latestCommitSha = Files.readString(branchFile.toPath()).trim();
+        return latestCommitSha.isEmpty() ? null : latestCommitSha;
+    }
+
+
 
     public void viewCommitHistory() throws IOException {
         // Step 1: Read the current HEAD
-        String headRef = Files.readString(new File(".git/HEAD").toPath()).trim();
+        String headRef = Files.readString(new File(".gitty/HEAD").toPath()).trim();
         String currentCommitSha;
 
         if (headRef.startsWith("ref: ")) {
             // Resolve HEAD to the branch reference
             String branchRef = headRef.substring(5);
-            currentCommitSha = Files.readString(new File(".git/" + branchRef).toPath()).trim();
+            currentCommitSha = Files.readString(new File(".gitty/" + branchRef).toPath()).trim();
         } else {
             // Detached HEAD (points directly to a commit)
             currentCommitSha = headRef;

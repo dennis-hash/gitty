@@ -125,7 +125,7 @@ public class GitObject {
     private File getObjectFile(String sha) {
         String dir = sha.substring(0, 2);
         String file = sha.substring(2);
-        return new File(".git/objects/" + dir + "/" + file);
+        return new File(".gitty/objects/" + dir + "/" + file);
     }
     private String rawBytesToHex(byte[] sha1Bytes) {
         StringBuilder hexString = new StringBuilder();
@@ -172,7 +172,7 @@ public class GitObject {
         String sha1 = HashUtils.computeSHA1(fullData);
 
         if (write) {
-            String path = ".git/objects/" + sha1.substring(0, 2) + "/" + sha1.substring(2);
+            String path = ".gitty/objects/" + sha1.substring(0, 2) + "/" + sha1.substring(2);
             File file = new File(path);
             file.getParentFile().mkdirs();
 

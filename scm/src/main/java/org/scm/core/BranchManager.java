@@ -7,9 +7,9 @@ import java.nio.file.Files;
 public class BranchManager {
     public void createBranch(String branchName) throws IOException {
         // Get the current HEAD reference
-        File headFile = new File(".git/HEAD");
+        File headFile = new File(".gitty/HEAD");
         if (!headFile.exists()) {
-            throw new IOException("No .git directory found. Are you inside a repository?");
+            throw new IOException("No .gitty directory found. Are you inside a repository?");
         }
 
         // Read the current HEAD content
@@ -19,7 +19,7 @@ public class BranchManager {
         // If HEAD points to a branch, resolve the commit hash
         if (currentHead.startsWith("ref: ")) {
             String branchPath = currentHead.substring(5); // Remove "ref: " prefix
-            File branchFile = new File(".git/" + branchPath);
+            File branchFile = new File(".gitty/" + branchPath);
             if (!branchFile.exists()) {
                 throw new IOException("Current branch reference does not exist: " + branchPath);
             }
@@ -27,7 +27,7 @@ public class BranchManager {
         }
 
         // Create the new branch file in .git/refs/heads
-        File newBranchFile = new File(".git/refs/heads/" + branchName);
+        File newBranchFile = new File(".gitty/refs/heads/" + branchName);
         if (newBranchFile.exists()) {
             System.out.println("Branch " + branchName + " already exists.");
             return;
@@ -43,7 +43,7 @@ public class BranchManager {
 
     public void switchBranch(String branchName) throws IOException {
         // Step 1: Verify if the branch exists
-        File branchFile = new File(".git/refs/heads/" + branchName);
+        File branchFile = new File(".gitty/refs/heads/" + branchName);
         if (!branchFile.exists()) {
             throw new IOException("Branch " + branchName + " does not exist.");
         }
@@ -52,9 +52,9 @@ public class BranchManager {
         String branchCommitHash = Files.readString(branchFile.toPath()).trim();
 
         // Step 3: Update the HEAD file to point to the new branch
-        File headFile = new File(".git/HEAD");
+        File headFile = new File(".gitty/HEAD");
         if (!headFile.exists()) {
-            throw new IOException("No .git directory found. Are you inside a repository?");
+            throw new IOException("No .gitty directory found. Are you inside a repository?");
         }
 
         String newHeadContent = "ref: refs/heads/" + branchName;

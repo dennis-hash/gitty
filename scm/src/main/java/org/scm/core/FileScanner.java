@@ -18,7 +18,7 @@ public class FileScanner {
 
     // Load patterns from .gitignore
     private void loadGitIgnore() {
-        File gitIgnoreFile = new File(".gitignore");
+        File gitIgnoreFile = new File(".gittyignore");
         if (gitIgnoreFile.exists()) {
             try {
                 List<String> lines = Files.readAllLines(gitIgnoreFile.toPath());
@@ -29,7 +29,7 @@ public class FileScanner {
                     }
                 }
             } catch (IOException e) {
-                System.err.println("Error reading .gitignore file: " + e.getMessage());
+                System.err.println("Error reading .gittyignore file: " + e.getMessage());
             }
         }
     }
