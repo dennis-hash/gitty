@@ -168,7 +168,7 @@ public class TreeManager {
 
 
     // Utility to locate a Git object file by SHA
-    private File getObjectFile(String sha) {
+    File getObjectFile(String sha) {
         String dir = sha.substring(0, 2);
         String file = sha.substring(2);
         return new File(".gitty/objects/" + dir + "/" + file);
