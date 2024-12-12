@@ -86,12 +86,13 @@ public class Main {
             }
 
             case "diffs" -> {
-                //System.out.println("Feature not yet implemented.");
-                IndexManager indexManager = new IndexManager();
-                List<IndexEntry> entries = indexManager.readIndex();
-                for(IndexEntry entry: entries){
-                    System.out.println(entry.getPath());
+                if (args.length < 3) {
+                    System.out.println("Error: Missing branch name for 'diffs' command.");
+                    return;
                 }
+                String branchName = args[2];
+                Diffs diffs = new Diffs();
+                diffs.diffBranches(branchName);
             }
 
             case "merge" -> {

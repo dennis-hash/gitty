@@ -3,12 +3,11 @@ package org.scm.core;
 import org.scm.models.Commit;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.InflaterInputStream;
 
 public class Diffs {
         public void diffBranches(String otherBranch) throws IOException {
@@ -30,6 +29,16 @@ public class Diffs {
                 System.out.println("no difference between branches"+currentBranchName+"and"+otherBranch);
             }
 
+            for (int i = 0; i < changes.get("modifiedShas").toArray().length; i += 2) {
+                // Ensure we don't go out of bounds
+                if (i + 1 < changes.get("modifiedShas").toArray().length) {
+                    compareBlobs((String) changes.get("modifiedShas").toArray()[i], (String) changes.get("modifiedShas").toArray()[i + 1]);
+                }
+            }
+
+            System.out.println("Added files: " + changes.get("added"));
+            System.out.println("Deleted files: " + changes.get("deleted"));
+            System.out.println("Modifies files: " + changes.get("modified"));
 
 
         }
@@ -65,43 +74,55 @@ public class Diffs {
         return latestCommitSha.isEmpty() ? null : latestCommitSha;
     }
 
-    private String decompress(File compressedFile) throws IOException {
-        try (InputStream fileStream = new FileInputStream(compressedFile);
-             GZIPInputStream gzipStream = new GZIPInputStream(fileStream)) {
-            StringBuilder output = new StringBuilder();
+    private static byte[] decompressBlob(String blobSha) throws IOException {
+        // Locate the blob file in the object storage
+        File objectFile = getObjectFile(blobSha);
+        if (!objectFile.exists()) {
+            throw new FileNotFoundException("Blob object not found: " + blobSha);
+        }
+
+        // Decompress the object (e.g., using zlib)
+        return decompressObject(objectFile);
+    }
+
+    private static File getObjectFile(String sha) {
+        String objectPath = ".gitty/objects/" + sha.substring(0, 2) + "/" + sha.substring(2);
+        return new File(objectPath);
+    }
+
+    private static byte[] decompressObject(File objectFile) throws IOException {
+        try (FileInputStream fileInputStream = new FileInputStream(objectFile);
+             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            InflaterInputStream inflater = new InflaterInputStream(fileInputStream);
             byte[] buffer = new byte[1024];
-            int len;
-            while ((len = gzipStream.read(buffer)) != -1) {
-                output.append(new String(buffer, 0, len));
+            int bytesRead;
+            while ((bytesRead = inflater.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
             }
-            return output.toString();
+            return out.toByteArray();
         }
     }
 
-    // Method to get unique lines between two blobs
-    public Set<String> getUniqueLines(String sha1, String sha2) throws IOException {
-        // Retrieve blob contents
-        File objectFile = new TreeManager().getObjectFile(sha1);
-        File objectFile2 = new TreeManager().getObjectFile(sha2);
-
+    public static void compareBlobs(String blobSha1, String blobSha2) throws IOException {
         // Decompress the blobs
-        String blob1Content = decompress(objectFile);
-        String blob2Content = decompress(objectFile2);
+        String content1 = new String(decompressBlob(blobSha1), StandardCharsets.UTF_8);
+        String content2 = new String(decompressBlob(blobSha2), StandardCharsets.UTF_8);
 
-        // Split contents into lines and store in sets
-        Set<String> linesBlob1 = new HashSet<>(Set.of(blob1Content.split("\\R"))); // Split by line breaks
-        Set<String> linesBlob2 = new HashSet<>(Set.of(blob2Content.split("\\R")));
+        // Split the content into lines
+        List<String> lines1 = Arrays.asList(content1.split("\n"));
+        List<String> lines2 = Arrays.asList(content2.split("\n"));
 
-        // Find unique lines
-        Set<String> uniqueToBlob1 = new HashSet<>(linesBlob1);
-        uniqueToBlob1.removeAll(linesBlob2); // Lines in blob1 not in blob2
-
-        Set<String> uniqueToBlob2 = new HashSet<>(linesBlob2);
-        uniqueToBlob2.removeAll(linesBlob1); // Lines in blob2 not in blob1
-
-        // Combine unique lines from both blobs
-        uniqueToBlob1.addAll(uniqueToBlob2);
-
-        return uniqueToBlob1;
+        // Compare lines
+        System.out.println("Differences:");
+        int maxLines = Math.max(lines1.size(), lines2.size());
+        for (int i = 0; i < maxLines; i++) {
+            String line1 = i < lines1.size() ? lines1.get(i) : "";
+            String line2 = i < lines2.size() ? lines2.get(i) : "";
+            if (!line1.equals(line2)) {
+                System.out.println("Line " + (i + 1) + ":");
+                System.out.println("< " + line1);
+                System.out.println("> " + line2);
+            }
+        }
     }
 }

@@ -134,19 +134,24 @@ public class TreeManager {
         List<String> addedFiles = new ArrayList<>();
         List<String> deletedFiles = new ArrayList<>();
         List<String> modifiedFiles = new ArrayList<>();
+        List<String> modifiedFilesShas = new ArrayList<>();
 
         // Detect added files
         for (String filePath : currentTree.keySet()) {
-            if (!parentTree.containsKey(filePath)) {
-                addedFiles.add(filePath);
-            } else {
-                // Check if the file has been modified (compare SHA1)
-                String currentSha1 = currentTree.get(filePath);
-                String parentSha1 = parentTree.get(filePath);
-                if (!currentSha1.equals(parentSha1)) {
-                    modifiedFiles.add(filePath);
+            if (!filePath.contains("/")){
+                if (!parentTree.containsKey(filePath)) {
+                    addedFiles.add(filePath);
+                } else {
+                    // Check if the file has been modified (compare SHA1)
+                    String currentSha1 = currentTree.get(filePath);
+                    String parentSha1 = parentTree.get(filePath);
+                    if (!currentSha1.equals(parentSha1)) {
+                        modifiedFiles.add(filePath);
+                        modifiedFilesShas.add(currentSha1);
+                        modifiedFilesShas.add(parentSha1);
+                    }
                 }
-            }
+        }
         }
 
         // Detect deleted files
@@ -161,6 +166,7 @@ public class TreeManager {
         changes.put("added", addedFiles);
         changes.put("deleted", deletedFiles);
         changes.put("modified", modifiedFiles);
+        changes.put("modifiedShas",modifiedFilesShas);
 
         return changes;
     }
