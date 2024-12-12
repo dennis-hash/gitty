@@ -48,7 +48,7 @@ public class TreeManager {
                 if (subDir.contains("/")) {
                     String directSubDir = subDir.split("/")[0]; // Get the first level of the subdirectory
                     String subTreeHash = writeTree(directoryMap, dir); // Recursively process the subdirectory
-                    treeContent.write(String.format("040000 %s\0", directSubDir).getBytes(StandardCharsets.UTF_8));
+                    treeContent.write(String.format("040000 %s\0", dir).getBytes(StandardCharsets.UTF_8));
                     treeContent.write(hexToRawBytes(subTreeHash)); // Convert hex SHA1 to raw bytes
                 }
             }

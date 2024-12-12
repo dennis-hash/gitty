@@ -86,7 +86,12 @@ public class Main {
             }
 
             case "diffs" -> {
-                System.out.println("Feature not yet implemented.");
+                //System.out.println("Feature not yet implemented.");
+                IndexManager indexManager = new IndexManager();
+                List<IndexEntry> entries = indexManager.readIndex();
+                for(IndexEntry entry: entries){
+                    System.out.println(entry.getPath());
+                }
             }
 
             case "merge" -> {
@@ -102,6 +107,10 @@ public class Main {
             case "status" -> {
                 GitStatus gitStatus = new GitStatus();
                 gitStatus.checkStatus();
+            }
+            case "clone" -> {
+                CloneManager cloneManager = new CloneManager();
+                cloneManager.cloneRepo("/home/dennis/Documents/angular");
             }
 
             default -> System.out.println("Unknown command: " + command + ". Use 'gitty --help' for the command list.");

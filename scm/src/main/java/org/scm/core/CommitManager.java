@@ -15,9 +15,41 @@ import java.util.zip.InflaterInputStream;
 public class CommitManager {
     public String writeCommit(String commitMessage, List<IndexEntry> entries, String authorName, String authorEmail, String parentSha)
             throws IOException, NoSuchAlgorithmException {
+
         TreeManager treeManager = new TreeManager();
         // Step 1: Create the tree object
         String treeSha = treeManager.createTreeObject(entries);
+
+        //check if there is any changes in the tree
+        Commit commit = readCommit(parentSha);
+        Map<String, List<String>> changes = treeManager.compareTrees(treeSha,commit.getTreeSha());
+        // Step 5: Determine the current branch
+        File headFile = new File(".gitty/HEAD");
+        if (!headFile.exists()) {
+            throw new IOException("No .gitty repository found. Are you inside a repository?");
+        }
+
+        String headContent = Files.readString(headFile.toPath()).trim();
+        if (!headContent.startsWith("ref: ")) {
+            throw new IOException("HEAD does not point to a valid branch reference.");
+        }
+
+        String branchPath = headContent.substring(5); // Remove "ref: " prefix
+        File branchFile = new File(".gitty/" + branchPath);
+
+        // Step 6: Ensure the branch file exists (handle first commit)
+        if (!branchFile.exists()) {
+            branchFile.getParentFile().mkdirs();
+            branchFile.createNewFile();
+        }
+        String branchName = branchPath.replace("refs/heads/", "");
+
+        if(changes.get("added").isEmpty() && changes.get("deleted").isEmpty() && changes.get("modified").isEmpty()){
+            System.out.println("On branch:"+branchName);
+            System.out.println("nothing to commit, working tree clean");
+            return "";
+        }
+
 
         // Step 2: Gather commit metadata
         long timestamp = System.currentTimeMillis() / 1000L; // Unix timestamp
@@ -39,34 +71,15 @@ public class CommitManager {
         byte[] commitData = commitContent.toString().getBytes(StandardCharsets.UTF_8);
         String commitSha = GitObject.createObject(commitData, "commit", true); // Save commit to .git/objects
 
-        // Step 5: Determine the current branch
-        File headFile = new File(".gitty/HEAD");
-        if (!headFile.exists()) {
-            throw new IOException("No .gitty repository found. Are you inside a repository?");
-        }
 
-        String headContent = Files.readString(headFile.toPath()).trim();
-        if (!headContent.startsWith("ref: ")) {
-            throw new IOException("HEAD does not point to a valid branch reference.");
-        }
-
-        String branchPath = headContent.substring(5); // Remove "ref: " prefix
-        File branchFile = new File(".gitty/" + branchPath);
-
-        // Step 6: Ensure the branch file exists (handle first commit)
-        if (!branchFile.exists()) {
-            branchFile.getParentFile().mkdirs();
-            branchFile.createNewFile();
-        }
 
         // Step 7: Write the new commit SHA to the branch file
         Files.writeString(branchFile.toPath(), commitSha);
-        Commit commit = readCommit(parentSha);
+
 
         // Step 8: Return the appropriate commit message
-        String branchName = branchPath.replace("refs/heads/", "");
+
         System.out.println( "[" + branchName + (parentSha == null ? " (root-commit)" : "") + " " + commitSha.substring(0, 7) + "] " + commitMessage);
-        Map<String, List<String>> changes = treeManager.compareTrees(treeSha,commit.getTreeSha());
         System.out.println("Added files: " + changes.get("added"));
         System.out.println("Deleted files: " + changes.get("deleted"));
         System.out.println("Modifies files: " + changes.get("modified"));

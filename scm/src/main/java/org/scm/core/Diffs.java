@@ -1,4 +1,4 @@
 package org.scm.core;
 
-public class ggh {
+public class Diffs {
 }
