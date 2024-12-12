@@ -200,11 +200,6 @@ public class TreeManager {
             return buffer.toByteArray();
         }
     }
-
-// Utility methods remain the same as previously defined
-
-
-
     private byte[] hexToRawBytes(String hex) {
         int length = hex.length();
         byte[] rawBytes = new byte[length / 2];
@@ -213,7 +208,5 @@ public class TreeManager {
         }
         return rawBytes;
     }
-
-
 
 }

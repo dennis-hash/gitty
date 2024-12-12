@@ -49,8 +49,8 @@ public class Initialize {
     }
 
     public static void readBlob(String hash){
-        String directoryHash = hash.substring(0, 2); //first two characters name of directory
-        String fileHash = hash.substring(2); //rest of the characters: name of file
+        String directoryHash = hash.substring(0, 2);
+        String fileHash = hash.substring(2);
 
         File blobFile = new File("./.gitty/objects/" + directoryHash + "/" + fileHash);
         try {
@@ -84,7 +84,7 @@ public class Initialize {
         System.out.println("\t" + "\u001B[31m" + "init" + "\u001B[0m" + " - Initialize a new Gitty repository.");
         System.out.println("\t" + "\u001B[31m" + "cat-file <hash>" + "\u001B[0m" + " - View the contents of a blob by its hash.");
         System.out.println("\t" + "\u001B[31m" + "add" + "\u001B[0m" + " - Add files to the staging area.");
-        System.out.println("\t" + "\u001B[31m" + "commit -m <message> [authorName] [authorEmail]" + "\u001B[0m" + " - Commit staged changes with a message and optional author info.");
+        System.out.println("\t" + "\u001B[31m" + "commit <message> [authorName] [authorEmail]" + "\u001B[0m" + " - Commit staged changes with a message and optional author info.");
         System.out.println("\t" + "\u001B[31m" + "log" + "\u001B[0m" + " - View the commit history.");
         System.out.println("\t" + "\u001B[31m" + "branch <branchName>" + "\u001B[0m" + " - Create a new branch.");
         System.out.println("\t" + "\u001B[31m" + "checkout <branchName>" + "\u001B[0m" + " - Switch to a specified branch.");

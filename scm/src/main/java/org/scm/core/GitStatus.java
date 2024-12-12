@@ -45,11 +45,9 @@ public class GitStatus {
 
             IndexEntry stagedEntry = stagedEntriesMap.get(filePath);
             if (stagedEntry == null) {
-                // New file (added but not staged)
                 changedFiles.add(filePath + " (new file)");
                 isClean = false;
             } else if (!stagedEntry.getSha1().equals(sha1)) {
-                // Modified file (staged entry differs from current working fil
                 changedFiles.add(filePath + " (modified)");
                 isClean = false;
             }

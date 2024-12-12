@@ -32,8 +32,7 @@ public class BranchManager {
             System.out.println("Branch " + branchName + " already exists.");
             return;
         }
-//
-//        // Write the commit hash to the new branch file
+        // Write the commit hash to the new branch file
         newBranchFile.getParentFile().mkdirs(); // Ensure parent directory exists
         System.out.println("current head"+currentHead);
         System.out.println("current head"+ newBranchFile.toPath());

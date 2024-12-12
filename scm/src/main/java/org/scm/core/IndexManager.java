@@ -28,8 +28,7 @@ public class IndexManager {
             byte[] data = FileUtils.readFile(file);
             long currentTime = System.currentTimeMillis();
 
-            String sha1 = createObject(data, "blob", true); // Create new blob object
-
+            String sha1 = createObject(data, "blob", true);
             // Check if the file is already in the index
             IndexEntry existingEntry = entriesByPath.get(file.getPath());
             if (existingEntry != null) {
@@ -44,7 +43,7 @@ public class IndexManager {
                         file.length()
                 );
                 entries.add(newEntry);
-                entriesByPath.put(file.getPath(), newEntry); // Update the map
+                entriesByPath.put(file.getPath(), newEntry);
             }
         }
 
@@ -133,21 +132,21 @@ public class IndexManager {
 
             // Write header
             baos.write("DIRC".getBytes(StandardCharsets.UTF_8)); // Signature
-            baos.write(intToBytes(2)); // Version
-            baos.write(intToBytes(entries.size())); // Number of entries
+            baos.write(intToBytes(2));
+            baos.write(intToBytes(entries.size()));
 
             // Write entries
             for (IndexEntry entry : entries) {
-                baos.write(intToBytes((int) (entry.getModifiedTime() / 1000))); // mtime_s
-                baos.write(intToBytes((int) (entry.getModifiedTime() % 1000))); // mtime_n
-                baos.write(intToBytes(0)); // dev (placeholder)
-                baos.write(intToBytes(0)); // ino (placeholder)
-                baos.write(intToBytes(0)); // mode (placeholder)
-                baos.write(intToBytes(0)); // uid (placeholder)
-                baos.write(intToBytes(0)); // gid (placeholder)
-                baos.write(intToBytes((int) entry.getSize())); // size
-                baos.write(hexToBytes(entry.getSha1())); // sha1
-                baos.write(shortToBytes(0)); // flags (placeholder)
+                baos.write(intToBytes((int) (entry.getModifiedTime() / 1000)));
+                baos.write(intToBytes((int) (entry.getModifiedTime() % 1000)));
+                baos.write(intToBytes(0)); // dev
+                baos.write(intToBytes(0)); // ino
+                baos.write(intToBytes(0)); // mode
+                baos.write(intToBytes(0)); // uid
+                baos.write(intToBytes(0)); // gid
+                baos.write(intToBytes((int) entry.getSize()));
+                baos.write(hexToBytes(entry.getSha1()));
+                baos.write(shortToBytes(0));
 
                 // Write path
                 baos.write(entry.getPath().getBytes(StandardCharsets.UTF_8));

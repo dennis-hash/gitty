@@ -1,5 +1,5 @@
 Format: 1.8
-Date: Fri, 13 Dec 2024 09:42:38 +0300
+Date: Fri, 13 Dec 2024 21:30:09 +0300
 Source: jdeb-scm
 Binary: jdeb-scm
 Architecture: all
@@ -13,8 +13,8 @@ Description:
 Changes:
  jdeb-scm (1.0~SNAPSHOT) unknown; urgency=low
 Checksums-Sha1:
- a700e3ef07562c00e200c1fc361089da4bebb358 580664 jdeb-scm.deb
+ 50d76bf4609f80785ab10f33efe1bfd6490b6e13 580632 jdeb-scm.deb
 Checksums-Sha256:
- a4db3fdb7a1a9efd60650f080572550e8136883187eed1a03983b80391c98873 580664 jdeb-scm.deb
+ 983f05b2f38f8e1b52ed6eabd7b3597ed5155e84a72149b2088d491ec00a8c4a 580632 jdeb-scm.deb
 Files:
- 8b4911e9d8efc40ea3f5a03bee26d608 580664 misc low jdeb-scm.deb
+ 696fdb5d80a35b45b085ca6f1b0bf4ef 580632 misc low jdeb-scm.deb

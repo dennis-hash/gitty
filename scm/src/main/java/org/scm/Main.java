@@ -40,7 +40,7 @@ public class Main {
                 indexManager.addFilesToIndex(scanner.getFiles());
             }
 
-            case "commit -m" -> {
+            case "commit" -> {
                 if (args.length < 2) {
                     System.out.println("Error: Missing commit message for 'commit' command.");
                     return;
@@ -54,6 +54,7 @@ public class Main {
 
                 CommitManager commitManager = new CommitManager();
                 String parentSha = commitManager.getLatestCommitSha();
+
                 String result = commitManager.writeCommit(commitMessage, entries, authorName, authorEmail, parentSha);
                 System.out.println(result);
             }
