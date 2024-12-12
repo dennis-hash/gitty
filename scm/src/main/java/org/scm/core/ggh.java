@@ -1,4 +1,4 @@
 package org.scm.core;
 
-public class text {
+public class ggh {
 }
