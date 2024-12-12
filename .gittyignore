@@ -14,4 +14,5 @@ Thumbs.db
 *.vscode/
 /scm/target
 .git/
+.gitty/
 .gittyignore

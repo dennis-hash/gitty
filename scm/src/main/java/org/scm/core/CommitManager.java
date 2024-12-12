@@ -9,14 +9,15 @@ import java.nio.file.Files;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.InflaterInputStream;
 
 public class CommitManager {
     public String writeCommit(String commitMessage, List<IndexEntry> entries, String authorName, String authorEmail, String parentSha)
             throws IOException, NoSuchAlgorithmException {
-        GitObject gitObject = new GitObject();
+        TreeManager treeManager = new TreeManager();
         // Step 1: Create the tree object
-        String treeSha = gitObject.createTreeObject(entries);
+        String treeSha = treeManager.createTreeObject(entries);
 
         // Step 2: Gather commit metadata
         long timestamp = System.currentTimeMillis() / 1000L; // Unix timestamp
@@ -54,16 +55,21 @@ public class CommitManager {
 
         // Step 6: Ensure the branch file exists (handle first commit)
         if (!branchFile.exists()) {
-            branchFile.getParentFile().mkdirs(); // Create parent directories if necessary
-            branchFile.createNewFile();         // Create the branch file
+            branchFile.getParentFile().mkdirs();
+            branchFile.createNewFile();
         }
 
         // Step 7: Write the new commit SHA to the branch file
         Files.writeString(branchFile.toPath(), commitSha);
+        Commit commit = readCommit(parentSha);
 
         // Step 8: Return the appropriate commit message
         String branchName = branchPath.replace("refs/heads/", "");
         System.out.println( "[" + branchName + (parentSha == null ? " (root-commit)" : "") + " " + commitSha.substring(0, 7) + "] " + commitMessage);
+        Map<String, List<String>> changes = treeManager.compareTrees(treeSha,commit.getTreeSha());
+        System.out.println("Added files: " + changes.get("added"));
+        System.out.println("Deleted files: " + changes.get("deleted"));
+        System.out.println("Modifies files: " + changes.get("modified"));
         return  commitSha;
     }
 

@@ -76,7 +76,7 @@ public class BranchMerger {
         Commit targetCommit = commitManager.readCommit(targetHeadSha);
 
         // Load the trees
-        GitObject treeManager = new GitObject();
+        TreeManager treeManager = new TreeManager();
         Map<String, String> currentTree = treeManager.readTree(currentCommit.getTreeSha());
         Map<String, String> targetTree = treeManager.readTree(targetCommit.getTreeSha());
 
