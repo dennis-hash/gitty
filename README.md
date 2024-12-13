@@ -319,12 +319,12 @@ public List<IndexEntry> readIndex() throws IOException {
             // Parse entries
             for (int i = 0; i < numEntries; i++) {
                 long mtimeSec = buffer.getInt() & 0xFFFFFFFFL;
-                long mtimeNano = buffer.getInt() & 0xFFFFFFFFL; // Unused, but aligned with written structure
-                buffer.getInt(); // Skip dev (placeholder)
-                buffer.getInt(); // Skip ino (placeholder)
-                buffer.getInt(); // Skip mode (placeholder)
-                buffer.getInt(); // Skip uid (placeholder)
-                buffer.getInt(); // Skip gid (placeholder)
+                long mtimeNano = buffer.getInt() & 0xFFFFFFFFL; 
+                buffer.getInt(); 
+                buffer.getInt(); 
+                buffer.getInt(); 
+                buffer.getInt(); 
+                buffer.getInt(); 
                 long size = buffer.getInt() & 0xFFFFFFFFL;
                 byte[] sha1 = new byte[20];
                 buffer.get(sha1);
@@ -369,7 +369,6 @@ public List<IndexEntry> readIndex() throws IOException {
             baos.write(intToBytes(2)); 
             baos.write(intToBytes(entries.size())); 
 
-            // Write entries
             for (IndexEntry entry : entries) {
                 baos.write(intToBytes((int) (entry.getModifiedTime() / 1000)));
                 baos.write(intToBytes((int) (entry.getModifiedTime() % 1000))); 
@@ -382,7 +381,6 @@ public List<IndexEntry> readIndex() throws IOException {
                 baos.write(hexToBytes(entry.getSha1())); 
                 baos.write(shortToBytes(0)); 
 
-                // Write path
                 baos.write(entry.getPath().getBytes(StandardCharsets.UTF_8));
                 baos.write(0); // Null-terminator for path
 
