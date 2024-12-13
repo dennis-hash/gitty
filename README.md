@@ -1132,7 +1132,17 @@ We can create a new branch using `branch <branch name>` command and switch to it
 ## Diffs between branches
 We can view  differences between two branches using the `diffs` command.
 
+ create a new folder named hello, add a text file then we commit to the main branch. When we perform a diff  between main and new branch we see that a new file has been added.
+
+![Screenshot from 2024-12-13 23-10-57](https://github.com/user-attachments/assets/66a8ffd0-cfa9-49fb-bb69-1988af58cd14)
+
 ## Merge branches
+`merge <target branch>` merges the target branch with the current branch
+
+Performing merge between main and new branch
 
 ## Clone
-To clone a gitty repositoey, use command `clone <target path>`
+To clone a gitty repositoey, use command `clone <target path>`. The tree from the latest commit is cloned into the target path.
+![Screenshot from 2024-12-13 23-18-22](https://github.com/user-attachments/assets/f543d724-0b13-4893-96d5-a71e4c97206c)
+
+
