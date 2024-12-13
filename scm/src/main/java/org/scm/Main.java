@@ -7,19 +7,17 @@ import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+
+
 public class Main {
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
-        if (args.length == 0 || (!args[0].equals("gitty"))) {
-            System.out.println("Invalid command. Use 'gitty --help' for the command list.");
-            return;
-        }
 
-        if (args.length == 1) {
+        if (args.length == 0) {
             Initialize.gittyIntroduction();
             return;
         }
 
-        final String command = args[1];
+        final String command = args[0];
 
         switch (command) {
             case "--help" -> Initialize.helpCenter();
@@ -27,11 +25,11 @@ public class Main {
             case "init" -> Initialize.initRepository();
 
             case "cat-file" -> {
-                if (args.length < 3) {
+                if (args.length < 2) {
                     System.out.println("Error: Missing hash for 'cat-file' command.");
                     return;
                 }
-                String hash = args[2];
+                String hash = args[1];
                 Initialize.readBlob(hash);
             }
 
@@ -42,14 +40,14 @@ public class Main {
                 indexManager.addFilesToIndex(scanner.getFiles());
             }
 
-            case "commit" -> {
-//                if (args.length < 4) {
-//                    System.out.println("Error: Missing commit message for 'commit' command.");
-//                    return;
-//                }
-                String commitMessage = args[2];
-                String authorName = args.length > 3 ? args[3] : "Default User";
-                String authorEmail = args.length > 4 ? args[4] : "default@example.com";
+            case "commit -m" -> {
+                if (args.length < 2) {
+                    System.out.println("Error: Missing commit message for 'commit' command.");
+                    return;
+                }
+                String commitMessage = args[1];
+                String authorName = args.length > 2 ? args[2] : "Default User";
+                String authorEmail = args.length > 3 ? args[3] : "default@example.com";
 
                 IndexManager indexManager = new IndexManager();
                 List<IndexEntry> entries = indexManager.readIndex();
@@ -66,41 +64,41 @@ public class Main {
             }
 
             case "branch" -> {
-                if (args.length < 3) {
+                if (args.length < 2) {
                     System.out.println("Error: Missing branch name for 'branch' command.");
                     return;
                 }
-                String branchName = args[2];
+                String branchName = args[1];
                 BranchManager branch = new BranchManager();
                 branch.createBranch(branchName);
             }
 
             case "checkout" -> {
-                if (args.length < 3) {
+                if (args.length < 2) {
                     System.out.println("Error: Missing branch name for 'checkout' command.");
                     return;
                 }
-                String branchName = args[2];
+                String branchName = args[1];
                 BranchManager branch = new BranchManager();
                 branch.switchBranch(branchName);
             }
 
             case "diffs" -> {
-                if (args.length < 3) {
+                if (args.length < 2) {
                     System.out.println("Error: Missing branch name for 'diffs' command.");
                     return;
                 }
-                String branchName = args[2];
+                String branchName = args[1];
                 Diffs diffs = new Diffs();
                 diffs.diffBranches(branchName);
             }
 
             case "merge" -> {
-                if (args.length < 3) {
+                if (args.length < 2) {
                     System.out.println("Error: Missing branch name for 'merge' command.");
                     return;
                 }
-                String branchName = args[2];
+                String branchName = args[1];
                 BranchMerger branchMerger = new BranchMerger();
                 branchMerger.mergeBranch(branchName);
             }
@@ -110,8 +108,13 @@ public class Main {
                 gitStatus.checkStatus();
             }
             case "clone" -> {
+                if (args.length < 2) {
+                    System.out.println("Error: Missing target path");
+                    return;
+                }
+                String path = args[1];
                 CloneManager cloneManager = new CloneManager();
-                cloneManager.cloneRepo("/home/dennis/Documents/angular");
+                cloneManager.cloneRepo(path);
             }
 
             default -> System.out.println("Unknown command: " + command + ". Use 'gitty --help' for the command list.");

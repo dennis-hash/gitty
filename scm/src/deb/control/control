@@ -1,0 +1,8 @@
+Package: [[name]]
+Version: [[version]]
+Section: misc
+Priority: low
+Architecture: all
+Description: gitty version control system
+Maintainer: ndungudennis250@gmail.com
+Depends: default-jre

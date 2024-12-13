@@ -1,0 +1,6 @@
+#!/bin/sh
+
+echo "
+Debian package has been installed, use the command
+\$ gitty
+"

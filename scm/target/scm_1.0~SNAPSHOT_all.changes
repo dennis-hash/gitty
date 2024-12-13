@@ -1,0 +1,20 @@
+Format: 1.8
+Date: Fri, 13 Dec 2024 09:42:38 +0300
+Source: jdeb-scm
+Binary: jdeb-scm
+Architecture: all
+Version: 1.0~SNAPSHOT
+Distribution: unknown
+Urgency: low
+Maintainer: ndungudennis250@gmail.com
+Changed-By: ndungudennis250@gmail.com
+Description:
+ jdeb-scm - gitty version control system
+Changes:
+ jdeb-scm (1.0~SNAPSHOT) unknown; urgency=low
+Checksums-Sha1:
+ a700e3ef07562c00e200c1fc361089da4bebb358 580664 jdeb-scm.deb
+Checksums-Sha256:
+ a4db3fdb7a1a9efd60650f080572550e8136883187eed1a03983b80391c98873 580664 jdeb-scm.deb
+Files:
+ 8b4911e9d8efc40ea3f5a03bee26d608 580664 misc low jdeb-scm.deb

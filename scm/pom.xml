@@ -12,6 +12,105 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- For debian package -->
+        <jdeb.inst.name>jdeb-${project.artifactId}</jdeb.inst.name>
+        <jdeb.inst.dir>/usr/share/${jdeb.inst.name}</jdeb.inst.dir>
     </properties>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+    <plugins>
+    <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>
+        <version>1.10</version>
+        <executions>
+            <execution>
+                <phase>package</phase>
+                <goals>
+                    <goal>assemble</goal>
+                </goals>
+                <configuration>
+                    <platforms>
+                        <platform>unix</platform>
+                    </platforms>
+                    <binFileExtensions>
+                        <unix>.sh</unix>
+                    </binFileExtensions>
+                    <programs>
+                        <program>
+                            <mainClass>org.scm.Main</mainClass>
+                            <id>run</id>
+                        </program>
+                    </programs>
+                    <repositoryName>jars</repositoryName>
+                    <repositoryLayout>flat</repositoryLayout>
+                    <includeConfigurationDirectoryInClasspath>false</includeConfigurationDirectoryInClasspath>
+                    <projectArtifactFirstInClassPath>true</projectArtifactFirstInClassPath>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
+
+
+
+        <plugin>
+            <groupId>org.vafer</groupId>
+            <artifactId>jdeb</artifactId>
+            <version>1.8</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>jdeb</goal>
+                    </goals>
+                    <configuration>
+                        <name>${jdeb.inst.name}</name>
+                        <deb>${project.build.directory}/${jdeb.inst.name}.deb</deb>
+                        <dataSet>
+                            <data>
+                                <src>${project.build.directory}/appassembler/jars</src>
+                                <type>directory</type>
+                                <includes>*.jar</includes>
+                                <mapper>
+                                    <type>perm</type>
+                                    <prefix>${jdeb.inst.dir}/jars</prefix>
+                                </mapper>
+                            </data>
+                            <data>
+                                <src>${project.build.directory}/appassembler/bin/run.sh</src>
+                                <type>file</type>
+                                <mapper>
+                                    <type>perm</type>
+                                    <prefix>${jdeb.inst.dir}/bin</prefix>
+                                    <filemode>755</filemode>
+                                </mapper>
+                            </data>
+                            <data>
+                                <type>link</type>
+                                <linkName>/usr/local/bin/gitty</linkName>
+                                <linkTarget>${jdeb.inst.dir}/bin/run.sh</linkTarget>
+                                <symlink>true</symlink>
+                            </data>
+                        </dataSet>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+
+
+
+    </plugins>
+    </build>
+
+
 
 </project>

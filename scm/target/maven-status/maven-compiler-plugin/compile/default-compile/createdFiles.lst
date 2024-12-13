@@ -1,1 +1,17 @@
+org/scm/core/CloneManager.class
+org/scm/core/GitObject.class
+org/scm/core/ObjectStore.class
+org/scm/utils/FileUtils.class
+org/scm/core/Diffs.class
+org/scm/models/IndexEntry.class
+org/scm/core/HashUtils.class
+org/scm/core/CommitManager.class
+org/scm/core/BranchManager.class
+org/scm/core/FileScanner.class
+org/scm/core/TreeManager.class
+org/scm/core/Initialize.class
+org/scm/models/Commit.class
+org/scm/core/IndexManager.class
+org/scm/core/GitStatus.class
 org/scm/Main.class
+org/scm/core/BranchMerger.class

@@ -1,1 +1,17 @@
 /home/dennis/Documents/springBoot/vcs/scm/src/main/java/org/scm/Main.java
+/home/dennis/Documents/springBoot/vcs/scm/src/main/java/org/scm/core/BranchManager.java
+/home/dennis/Documents/springBoot/vcs/scm/src/main/java/org/scm/core/BranchMerger.java
+/home/dennis/Documents/springBoot/vcs/scm/src/main/java/org/scm/core/CloneManager.java
+/home/dennis/Documents/springBoot/vcs/scm/src/main/java/org/scm/core/CommitManager.java
+/home/dennis/Documents/springBoot/vcs/scm/src/main/java/org/scm/core/Diffs.java
+/home/dennis/Documents/springBoot/vcs/scm/src/main/java/org/scm/core/FileScanner.java
+/home/dennis/Documents/springBoot/vcs/scm/src/main/java/org/scm/core/GitObject.java
+/home/dennis/Documents/springBoot/vcs/scm/src/main/java/org/scm/core/GitStatus.java
+/home/dennis/Documents/springBoot/vcs/scm/src/main/java/org/scm/core/HashUtils.java
+/home/dennis/Documents/springBoot/vcs/scm/src/main/java/org/scm/core/IndexManager.java
+/home/dennis/Documents/springBoot/vcs/scm/src/main/java/org/scm/core/Initialize.java
+/home/dennis/Documents/springBoot/vcs/scm/src/main/java/org/scm/core/ObjectStore.java
+/home/dennis/Documents/springBoot/vcs/scm/src/main/java/org/scm/core/TreeManager.java
+/home/dennis/Documents/springBoot/vcs/scm/src/main/java/org/scm/models/Commit.java
+/home/dennis/Documents/springBoot/vcs/scm/src/main/java/org/scm/models/IndexEntry.java
+/home/dennis/Documents/springBoot/vcs/scm/src/main/java/org/scm/utils/FileUtils.java
