@@ -893,9 +893,6 @@ public void switchBranch(String branchName) throws IOException {
 }
 ```
 
-## Merge branch
-## BranchMerger Class Documentation
-
 ### mergeBranch Method
 Merges the specified branch into the current branch. It performs conflict detection and creates a new merge commit if no conflicts are found.
 
@@ -1088,8 +1085,54 @@ public void diffBranches(String otherBranch) throws IOException {
 }
 ```
 
-# Testing
-# Limitations
+# Testing 
+## Start up
+![Screenshot from 2024-12-13 20-38-55](https://github.com/user-attachments/assets/2a3407cb-85a0-4aaf-b3f1-6ba352c13726)
 
+## List commands `gitty --help`
+`gitty --help` list commands available
+![Screenshot from 2024-12-13 20-21-49](https://github.com/user-attachments/assets/60991d9b-71e8-4c0c-bab3-9103c8fc24bb)
 
-Command list th
+## Initialize repository 
+`gitty init` initializes the gitty repository: it create a .gitty folder and a .gittyignore  which includes files/folders not to be stagged.
+
+![Screenshot from 2024-12-13 20-41-55](https://github.com/user-attachments/assets/cb6c2be4-8145-4e2d-a951-9a94a62708d6)
+
+## Staging 
+`gitty add .` command adds the files in the working tree into the staging area(index file) and create blobs fore them in the .gitty folder.
+
+Right now there is no index file and the objects folder is empty.
+
+![Screenshot from 2024-12-13 20-48-27](https://github.com/user-attachments/assets/1ba1e48a-9cf5-4862-9df0-299d99a990ae)
+
+After creating a file `main.txt` and running `git add`, files in the working tree are staged into index file and blob objects for each file is created.
+
+a. index file is created
+
+![Screenshot from 2024-12-13 21-35-04](https://github.com/user-attachments/assets/d7109d21-6a6f-48f3-9269-acf67b324208)
+
+b. blob for index.txt is created in the objects folder (use command `git cat-file -p <sha>` to show contents of the object).
+![Screenshot from 2024-12-13 21-37-27](https://github.com/user-attachments/assets/28e24de4-eab1-4a85-82a8-12d0f84e8fb3)
+
+## Commit
+`git commit <message>` command creates creates a commit object, referencing the blob objects (and potentially tree objects if there is any subdirectories) that represent the current state of the project.
+
+After we commit the sha1 referencing the commit object is returned. In the objects folder a commit object folder '3d' and a tree object folder '4b' is created.
+
+![Screenshot from 2024-12-13 21-49-16](https://github.com/user-attachments/assets/15d0ef9c-dff7-44e6-a751-d6181c1f1ac3)
+
+## Branch
+The current branch is branch: `main` 
+![Screenshot from 2024-12-13 21-54-43](https://github.com/user-attachments/assets/f4f5cd0d-3d7f-47b3-a59a-1d345c8b7709)
+
+We can create a new branch using `branch <branch name>` command and switch to it using `checkout <new branch name>` command. The new branch will point to the latest commit.
+
+![Screenshot from 2024-12-13 21-59-02](https://github.com/user-attachments/assets/97b4aaf9-0abd-4ddd-8e3b-b7d545c3cb0f)
+
+## Diffs between branches
+We can view  differences between two branches using the `diffs` command.
+
+## Merge branches
+
+## Clone
+To clone a gitty repositoey, use command `clone <target path>`
