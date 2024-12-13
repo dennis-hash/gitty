@@ -9,7 +9,7 @@ The `.deb` file is available for Ubuntu users [here](https://drive.google.com/fi
 # Introduction
 
 ### Problem Statement
-Modern software development relies heavily on version control systems to manage and track changes in code. Inspired by Git, this project implements a simplified distributed source control system called Gitty, which provides foundational features like initializing a repository, staging files, making commits, viewing commit history, creating branches, and merging changes.
+Build a distributed source control system in the style of Git. It should be possible to initialise a repository in a directory and the repository proper should be stored in a dot-prefixed subdirectory. There should be support for staging files (git add) and committing them. There should be a way to view the commit history, to create branches, merge and do diffs between them. Conflicting changes should be detected but there's no need to build resolution features for them, or anything like rebasing. It should also be possible to clone the repository (on disk—it doesn't have to work over network). Finally, there should be a way to ignore files.
 
 ### Objective
 The goal of this project is to build a functional version control system that emulates Git’s core features. It offers developers the ability to manage their code base locally while gaining insights into the underlying mechanics of version control systems. 
