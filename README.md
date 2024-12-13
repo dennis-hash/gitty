@@ -2,9 +2,9 @@
 0.1
 
 ## Gitty installation guide
-The `.deb` file is available for Ubuntu users in this repository.
+The `.deb` file is available for Ubuntu users [here](https://drive.google.com/file/d/1G6luwC4XYFrE1cp0QZ6jMtx0Wtb7ZPTF/view?usp=sharing).
 
-`sudo apt install gitty.deb`
+`sudo apt install jdeb-scm.deb`
 
 # Introduction
 
